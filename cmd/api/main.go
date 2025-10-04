@@ -12,8 +12,18 @@ type product struct {
 	Name string
 }
 
+type myHandler struct{}
+
+// ServeHTTP implements http.Handler.
+func (m myHandler) ServeHTTP( w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("myHandler"))
+}
+
 func main() {
 	r := chi.NewRouter()
+
+	m := myHandler{}
+	r.Handle("/handler", m)
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		product := r.URL.Query().Get("product")
 		id := r.URL.Query().Get("id")
