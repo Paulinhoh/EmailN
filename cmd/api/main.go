@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/render"
 )
 
@@ -12,18 +13,15 @@ type product struct {
 	Name string
 }
 
-type myHandler struct{}
-
-// ServeHTTP implements http.Handler.
-func (m myHandler) ServeHTTP( w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("myHandler"))
-}
-
 func main() {
 	r := chi.NewRouter()
 
-	m := myHandler{}
-	r.Handle("/handler", m)
+	// a good base middleware stack
+	r.Use(middleware.RequestID)
+	r.Use(middleware.RealIP)
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
+
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		product := r.URL.Query().Get("product")
 		id := r.URL.Query().Get("id")
@@ -51,4 +49,12 @@ func main() {
 		render.JSON(w, r, product)
 	})
 	http.ListenAndServe(":3000", r)
+}
+
+func myMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		println("before")
+		next.ServeHTTP(w, r)
+		println("after")
+	})
 }
