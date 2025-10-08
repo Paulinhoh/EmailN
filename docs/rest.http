@@ -1,7 +1,7 @@
 POST http://localhost:3000/campaigns
 
 {
-    "name": "mouse2",
+    "name": "mouse 2",
     "content": "change password",
     "emails": ["teste@teste.com"]
 }
