@@ -12,7 +12,7 @@ var (
 	name     = "Campaign X"
 	content  = "Body Hi!"
 	contacts = []string{"email1@gmail.com", "email2@gmail.com"}
-	fake = faker.New()
+	fake     = faker.New()
 )
 
 func Test_NewCampaign_CreateCampaign(t *testing.T) {
@@ -31,6 +31,14 @@ func Test_NewCampaign_IDIsNotNil(t *testing.T) {
 	campaign, _ := NewCampaign(name, content, contacts)
 
 	assert.NotNil(campaign.ID)
+}
+
+func Test_NewCampaign_MustStatusStartWithPernding(t *testing.T) {
+	assert := assert.New(t)
+
+	campaign, _ := NewCampaign(name, content, contacts)
+
+	assert.NotNil(Pending, campaign.Status)
 }
 
 func Test_NewCampaign_CreatedOnMustBeNow(t *testing.T) {
