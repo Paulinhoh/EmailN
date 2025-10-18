@@ -1,0 +1,13 @@
+POST http://localhost:3000/campaigns
+
+{
+    "name": "change",
+    "content": "change password",
+    "emails": ["henrique@teste.com"]
+}
+
+###
+GET http://localhost:3000/campaigns/d3pvs061jh06b61fpkrg
+
+###
+PATCH  http://localhost:3000/campaigns/cancel/d3pvs061jh06b61fpkrg
